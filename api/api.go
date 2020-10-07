@@ -97,8 +97,11 @@ func getJSON(response http.ResponseWriter, request *http.Request) {
 	/*YOUR CODE HERE*/
 	newCred := Credentials{}
 	err := json.NewDecoder(request.Body).Decode(&newCred)
-	if err != nil || newCred.Username == "" || newCred.Password == "" {
+	if err != nil  {
 		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	} else if newCred.Username == "" || newCred.Password == "" {
+		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
 	
@@ -126,8 +129,11 @@ func signup(response http.ResponseWriter, request *http.Request) {
 	/*YOUR CODE HERE*/
 	newCred := Credentials{}
 	err := json.NewDecoder(request.Body).Decode(&newCred)
-	if err != nil || newCred.Username == "" || newCred.Password == "" {
+	if err != nil {
 		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	} else if newCred.Username == "" || newCred.Password == "" {
+		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
 	creds = append(creds, newCred)
@@ -186,8 +192,11 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 	/*YOUR CODE HERE*/
 	newCred := Credentials{}
 	err := json.NewDecoder(request.Body).Decode(&newCred)
-	if err != nil || newCred.Password == "" {
+	if err != nil {
 		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	} else if newCred.Username == "" || newCred.Password == "" {
+		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
 	for _, element := range creds {
@@ -223,8 +232,11 @@ func updatePassword(response http.ResponseWriter, request *http.Request) {
 	/*YOUR CODE HERE*/
 	newCred := Credentials{}
 	err := json.NewDecoder(request.Body).Decode(&newCred)
-	if err != nil || newCred.Username == "" || newCred.Password == "" {
+	if err != nil  {
 		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	} else if newCred.Username == "" || newCred.Password == "" {
+		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
 	for index, element := range creds {
@@ -260,8 +272,11 @@ func deleteUser(response http.ResponseWriter, request *http.Request) {
 	/*YOUR CODE HERE*/
 	newCred := Credentials{}
 	err := json.NewDecoder(request.Body).Decode(&newCred)
-	if err != nil || newCred.Username == "" || newCred.Password == "" {
+	if err != nil {
 		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	} else if newCred.Username == "" || newCred.Password == "" {
+		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
 	ind := 0
