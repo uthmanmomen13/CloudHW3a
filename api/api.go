@@ -186,7 +186,7 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 	/*YOUR CODE HERE*/
 	newCred := Credentials{}
 	err := json.NewDecoder(request.Body).Decode(&newCred)
-	if err != nil {
+	if err != nil || newCred.Password == "" {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -223,7 +223,7 @@ func updatePassword(response http.ResponseWriter, request *http.Request) {
 	/*YOUR CODE HERE*/
 	newCred := Credentials{}
 	err := json.NewDecoder(request.Body).Decode(&newCred)
-	if err != nil {
+	if err != nil || newCred.Username == "" || newCred.Password == "" {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -260,7 +260,7 @@ func deleteUser(response http.ResponseWriter, request *http.Request) {
 	/*YOUR CODE HERE*/
 	newCred := Credentials{}
 	err := json.NewDecoder(request.Body).Decode(&newCred)
-	if err != nil {
+	if err != nil || newCred.Username == "" || newCred.Password == "" {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	}
