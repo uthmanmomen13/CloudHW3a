@@ -165,7 +165,7 @@ func getIndex(response http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
-	} else if newCred.Username == "" || newCred.Password == "" {
+	} else if newCred.Username == "" {
 		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
@@ -204,7 +204,7 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
-	} else if newCred.Username == "" || newCred.Password == ""{
+	} else if newCred.Username == "" {
 		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
@@ -289,7 +289,7 @@ func deleteUser(response http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
-	} else if newCred.Username == "" || newCred.Password == "" {
+	} else if newCred.Username == ""{
 		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
