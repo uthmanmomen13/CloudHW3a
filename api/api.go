@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"fmt"
 	"encoding/json"
+	"strconv"
 )
 
 
@@ -13,7 +14,7 @@ import (
 
 
 /*YOUR CODE HERE*/
-var creds []Credentials 
+var creds []Credentials = []Credentials{}
 
 /*
 RegisterRoutes comment
@@ -170,7 +171,7 @@ func getIndex(response http.ResponseWriter, request *http.Request) {
 	}
 	for index, element := range creds {
 		if element.Username == newCred.Username {
-			fmt.Fprintf(response, "%d", index)
+			fmt.Fprintf(response, strconv.Itoa(index))
 		}
 	}
 	response.WriteHeader(200)
@@ -201,7 +202,7 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
-	} else if newCred.Username == "" {
+	} else if newCred.Username == "" || newCred.Password == ""{
 		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
@@ -288,7 +289,7 @@ func deleteUser(response http.ResponseWriter, request *http.Request) {
 	}
 	ind := 0
 	for index, element := range creds {
-		if element.Username == newCred.Username {
+		if element.Username == newCred.Username && element.Password == newCred.Password {
 			ind = index
 		}
 	}
