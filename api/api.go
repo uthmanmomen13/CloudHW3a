@@ -3,16 +3,21 @@ package api
 import (
 	"net/http"
 	"github.com/gorilla/mux"
+	"fmt"
+	"encoding/json"
 )
 
 
 //Declare a global array of Credentials
 //See credentials.go
 
+
 /*YOUR CODE HERE*/
+var creds []Credentials 
 
-
-
+/*
+RegisterRoutes comment
+*/
 func RegisterRoutes(router *mux.Router) error {
 
 	/*
@@ -20,7 +25,6 @@ func RegisterRoutes(router *mux.Router) error {
 	Fill out the appropriate get methods for each of the requests, based on the nature of the request.
 
 	Think about whether you're reading, writing, or updating for each request
-
 
 	*/
 
@@ -46,6 +50,17 @@ func getCookie(response http.ResponseWriter, request *http.Request) {
 	*/
 
 	/*YOUR CODE HERE*/
+
+	cookie, err := request.Cookie("access_token")
+	if err != nil{
+		fmt.Fprintf(response, "");
+
+	} else{
+		accessToken := cookie.Value
+		fmt.Fprintf(response, accessToken)
+	}
+		
+
 }
 
 func getQuery(response http.ResponseWriter, request *http.Request) {
@@ -56,6 +71,10 @@ func getQuery(response http.ResponseWriter, request *http.Request) {
 	*/
 
 	/*YOUR CODE HERE*/
+	id := request.URL.Query().Get("userID")
+	 
+	fmt.Fprintf(response, id)
+	
 }
 
 func getJSON(response http.ResponseWriter, request *http.Request) {
@@ -76,7 +95,14 @@ func getJSON(response http.ResponseWriter, request *http.Request) {
 	*/
 
 	/*YOUR CODE HERE*/
-	
+	cred := Credentials{}
+	err := json.NewDecoder(request.Body).Decode(&cred)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Fprintf(response, cred.Username + "\n")
+	fmt.Fprintf(response, cred.Password)
 }
 
 func signup(response http.ResponseWriter, request *http.Request) {
@@ -97,6 +123,13 @@ func signup(response http.ResponseWriter, request *http.Request) {
 	*/
 
 	/*YOUR CODE HERE*/
+	newCred := Credentials{}
+	err := json.NewDecoder(request.Body).Decode(&newCred)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+	creds = append(creds, newCred)
 }
 
 func getIndex(response http.ResponseWriter, request *http.Request) {
@@ -108,7 +141,6 @@ func getIndex(response http.ResponseWriter, request *http.Request) {
 			"username" : <username>
 		}
 
-
 		Decode this json file into an instance of Credentials. (What happens when we don't have all the fields? Does it matter in this case?)
 
 		Return the array index of the Credentials object in the global Credentials array
@@ -119,6 +151,18 @@ func getIndex(response http.ResponseWriter, request *http.Request) {
 	*/
 
 	/*YOUR CODE HERE*/
+	newCred := Credentials{}
+	err := json.NewDecoder(request.Body).Decode(&newCred)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+	for index, element := range creds {
+		if element.Username == newCred.Username {
+			fmt.Fprintf(response, "%d", index)
+		}
+	}
+
 }
 
 func getPassword(response http.ResponseWriter, request *http.Request) {
@@ -139,6 +183,18 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 	*/
 
 	/*YOUR CODE HERE*/
+	newCred := Credentials{}
+	err := json.NewDecoder(request.Body).Decode(&newCred)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+	for _, element := range creds {
+		if element.Username == newCred.Username {
+			fmt.Fprintf(response, element.Password)
+		}
+	}
+
 }
 
 
@@ -164,6 +220,18 @@ func updatePassword(response http.ResponseWriter, request *http.Request) {
 	*/
 
 	/*YOUR CODE HERE*/
+	newCred := Credentials{}
+	err := json.NewDecoder(request.Body).Decode(&newCred)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+	for index, element := range creds {
+		if element.Username == newCred.Username {
+			creds[index].Password = newCred.Password
+		}
+	}
+
 }
 
 func deleteUser(response http.ResponseWriter, request *http.Request) {
@@ -189,4 +257,19 @@ func deleteUser(response http.ResponseWriter, request *http.Request) {
 	*/
 
 	/*YOUR CODE HERE*/
+	newCred := Credentials{}
+	err := json.NewDecoder(request.Body).Decode(&newCred)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+	ind := 0
+	for index, element := range creds {
+		if element.Username == newCred.Username {
+			ind = index
+		}
+	}
+	slice1 := creds[ind+1:]
+	creds = append(creds[0:ind], slice1...)
+
 }
