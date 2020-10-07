@@ -137,6 +137,7 @@ func signup(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 	creds = append(creds, newCred)
+	response.WriteHeader(201)
 }
 
 func getIndex(response http.ResponseWriter, request *http.Request) {
@@ -169,6 +170,7 @@ func getIndex(response http.ResponseWriter, request *http.Request) {
 			fmt.Fprintf(response, "%d", index)
 		}
 	}
+	response.WriteHeader(400)
 
 }
 
@@ -182,7 +184,7 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 		}
 
 
-		
+
 		Decode this json file into an instance of Credentials. (What happens when we don't have all the fields? Does it matter in this case?)
 
 		Write the password of the specific user to the response
@@ -205,6 +207,7 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 			fmt.Fprintf(response, element.Password)
 		}
 	}
+	response.WriteHeader(200)
 
 }
 
@@ -288,5 +291,6 @@ func deleteUser(response http.ResponseWriter, request *http.Request) {
 	}
 	slice1 := creds[ind+1:]
 	creds = append(creds[0:ind], slice1...)
+	response.WriteHeader(200)
 
 }
