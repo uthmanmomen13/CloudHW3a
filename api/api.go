@@ -166,15 +166,17 @@ func getIndex(response http.ResponseWriter, request *http.Request) {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	} else if newCred.Username == "" || newCred.Password == "" {
-		response.WriteHeader(400)
+		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
 	for index, element := range creds {
 		if element.Username == newCred.Username {
 			fmt.Fprintf(response, strconv.Itoa(index))
+			return
 		}
 	}
-	response.WriteHeader(200)
+	http.Error(response, "", http.StatusBadRequest)
+	
 
 }
 
@@ -203,15 +205,17 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	} else if newCred.Username == "" || newCred.Password == ""{
-		response.WriteHeader(400)
+		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
 	for _, element := range creds {
 		if element.Username == newCred.Username {
 			fmt.Fprintf(response, element.Password)
+			return
 		}
 	}
-	response.WriteHeader(200)
+	http.Error(response, "", http.StatusBadRequest)
+	
 
 }
 
@@ -244,14 +248,16 @@ func updatePassword(response http.ResponseWriter, request *http.Request) {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	} else if newCred.Username == "" || newCred.Password == "" {
-		response.WriteHeader(400)
+		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
 	for index, element := range creds {
 		if element.Username == newCred.Username {
 			creds[index].Password = newCred.Password
+			return
 		}
 	}
+	http.Error(response, "", http.StatusBadRequest)
 
 }
 
@@ -284,17 +290,22 @@ func deleteUser(response http.ResponseWriter, request *http.Request) {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	} else if newCred.Username == "" || newCred.Password == "" {
-		response.WriteHeader(400)
+		http.Error(response, "", http.StatusBadRequest)
 		return
 	}
 	ind := 0
 	for index, element := range creds {
-		if element.Username == newCred.Username && element.Password == newCred.Password {
+		if element.Username == newCred.Username{
 			ind = index
+			slice1 := creds[ind+1:]
+			creds = append(creds[:ind], slice1...)
+			return
 		}
 	}
-	slice1 := creds[ind+1:]
-	creds = append(creds[:ind], slice1...)
-	response.WriteHeader(200)
+	http.Error(response, "", http.StatusBadRequest)
+	
+
+	
+	
 
 }
