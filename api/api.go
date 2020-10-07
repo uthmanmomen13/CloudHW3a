@@ -95,14 +95,15 @@ func getJSON(response http.ResponseWriter, request *http.Request) {
 	*/
 
 	/*YOUR CODE HERE*/
-	cred := Credentials{}
-	err := json.NewDecoder(request.Body).Decode(&cred)
-	if err != nil {
+	newCred := Credentials{}
+	err := json.NewDecoder(request.Body).Decode(&newCred)
+	if err != nil || newCred.Username == "" || newCred.Password == "" {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Fprintf(response, cred.Username + "\n")
-	fmt.Fprintf(response, cred.Password)
+	
+	fmt.Fprintf(response, newCred.Username + "\n")
+	fmt.Fprintf(response, newCred.Password)
 }
 
 func signup(response http.ResponseWriter, request *http.Request) {
@@ -125,7 +126,7 @@ func signup(response http.ResponseWriter, request *http.Request) {
 	/*YOUR CODE HERE*/
 	newCred := Credentials{}
 	err := json.NewDecoder(request.Body).Decode(&newCred)
-	if err != nil {
+	if err != nil || newCred.Username == "" || newCred.Password == "" {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	}
