@@ -166,7 +166,7 @@ func getIndex(response http.ResponseWriter, request *http.Request) {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	} else if newCred.Username == "" || newCred.Password == "" {
-		http.Error(response, "", http.StatusBadRequest)
+		response.WriteHeader(400)
 		return
 	}
 	for index, element := range creds {
@@ -203,7 +203,7 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	} else if newCred.Username == "" || newCred.Password == ""{
-		http.Error(response, "", http.StatusBadRequest)
+		response.WriteHeader(400)
 		return
 	}
 	for _, element := range creds {
@@ -244,7 +244,7 @@ func updatePassword(response http.ResponseWriter, request *http.Request) {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	} else if newCred.Username == "" || newCred.Password == "" {
-		http.Error(response, "", http.StatusBadRequest)
+		response.WriteHeader(400)
 		return
 	}
 	for index, element := range creds {
@@ -284,7 +284,7 @@ func deleteUser(response http.ResponseWriter, request *http.Request) {
 		http.Error(response, err.Error(), http.StatusBadRequest)
 		return
 	} else if newCred.Username == "" || newCred.Password == "" {
-		http.Error(response, "", http.StatusBadRequest)
+		response.WriteHeader(400)
 		return
 	}
 	ind := 0
