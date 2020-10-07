@@ -182,6 +182,7 @@ func getPassword(response http.ResponseWriter, request *http.Request) {
 		}
 
 
+		
 		Decode this json file into an instance of Credentials. (What happens when we don't have all the fields? Does it matter in this case?)
 
 		Write the password of the specific user to the response
